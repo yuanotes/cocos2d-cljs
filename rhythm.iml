@@ -56,5 +56,6 @@
     <orderEntry type="library" name="Leiningen: com.google.protobuf/protobuf-java:2.5.0" level="project" />
     <orderEntry type="library" name="Leiningen: org.json/json:20090211" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/google-closure-library-third-party:0.0-20140718-946a7d39" level="project" />
+    <orderEntry type="library" name="Leiningen: clojurescript.test:0.3.2" level="project" />
   </component>
 </module>

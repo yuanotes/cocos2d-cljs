@@ -1,6 +1,7 @@
 goog.addDependency("base.js", ['goog'], []);
 goog.addDependency("../cljs/core.js", ['cljs.core'], ['goog.string', 'goog.object', 'goog.string.StringBuffer', 'goog.array']);
-goog.addDependency("../joycastle/utils.js", ['joycastle.utils'], ['cljs.core']);
+goog.addDependency("../cocos2d/core.js", ['cocos2d.core'], ['cljs.core']);
+goog.addDependency("../joycastle/utils.js", ['joycastle.utils'], ['cljs.core', 'cocos2d.core']);
 goog.addDependency("../joycastle/display.js", ['joycastle.display'], ['cljs.core']);
 goog.addDependency("../cljs/core/async/impl/protocols.js", ['cljs.core.async.impl.protocols'], ['cljs.core']);
 goog.addDependency("../cljs/core/async/impl/ioc_helpers.js", ['cljs.core.async.impl.ioc_helpers'], ['cljs.core', 'cljs.core.async.impl.protocols']);
@@ -13,7 +14,6 @@ goog.addDependency("../clojure/string.js", ['clojure.string'], ['goog.string', '
 goog.addDependency("../cljs/reader.js", ['cljs.reader'], ['goog.string', 'cljs.core', 'goog.string.StringBuffer']);
 goog.addDependency("../figwheel/client.js", ['figwheel.client'], ['goog.net.jsloader', 'cljs.core', 'cljs.core.async', 'clojure.string', 'cljs.reader']);
 goog.addDependency("../rhythm_figwheel.js", ['rhythm_figwheel'], ['cljs.core', 'figwheel.client']);
-goog.addDependency("../cocos2d/core.js", ['cocos2d.core'], ['cljs.core']);
 goog.addDependency("../rhythm/core.js", ['rhythm.core'], ['cljs.core', 'cocos2d.core', 'joycastle.utils']);
 goog.addDependency("../rhythm/game_manager.js", ['rhythm.game_manager'], ['cljs.core']);
 goog.addDependency("../joycastle/ccb.js", ['joycastle.ccb'], ['cljs.core']);

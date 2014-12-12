@@ -9,7 +9,8 @@
                  ]
   :plugins [[lein-cljsbuild "1.0.3"]
             [lein-figwheel "0.1.3-SNAPSHOT"]
-            [lein-idea "1.0.1"]]
+            [lein-idea "1.0.1"]
+            [com.cemerick/clojurescript.test "0.3.2"]] ;; <- Adding lein plugin for tests
   :jvm-opts ["-Xmx1G"]
   :figwheel {
              :http-server-root "public/"
@@ -23,8 +24,15 @@
                                   :output-dir "resources/public/out"
                                   :optimizations :none
                                   :source-map true}
+                       }
+                      {:id "test"
+                       :source-paths ["src/joycastle" "test"]
+                       :notify-command ["phantomjs" :cljs.test/runner "resources/public/test/rhythm_test.js"]
+                       :compiler {
+                                  :output-to "resources/public/test/rhythm_test.js"
+                                  :optimizations :whitespace
+                                  }
                        }]
 
               }
   )
-
