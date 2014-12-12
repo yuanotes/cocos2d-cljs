@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Cocos2d-html5 Hello World test</title>
+    <link rel="icon" type="image/GIF" href="res/favicon.ico"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="full-screen" content="yes"/>
+    <meta name="screen-orientation" content="portrait"/>
+    <meta name="x5-fullscreen" content="true"/>
+    <meta name="360-fullscreen" content="true"/>
+    <style>
+        body, canvas, div {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            -khtml-user-select: none;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+    </style>
+</head>
+<body style="padding:0; margin: 0; background: #000;">
+<div style="width:480px;height:720px;margin:auto;">
+    <canvas id="gameCanvas" width="480" height="720"></canvas>
+</div>
+<script src="cocos2d-js-v3.1-min.js"></script>
+<script src="../out/goog/base.js"></script>
+<script src="src/resource.js"></script>
+<script src="src/game.js"></script>
+<script>goog.require("cocos2d.core")</script>
+<script>goog.require("joycastle.utils")</script>
+<script>goog.require("rhythm.core")</script>
+<script>goog.require("rhythm_figwheel")</script>
+
+
+</body>
+</html>
