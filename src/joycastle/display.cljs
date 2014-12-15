@@ -3,10 +3,15 @@
             [joycastle.utils :as utils]))
 
 
-(def ^:constant POSITION
-  #{:TOP :RIGHT :BOTTOM :LEFT
-    :TOP_LEFT :TOP_RIGHT :BOTTOM_RIGHT :BOTTOM_LEFT
-    })
+(def POSITION
+  (zipmap
+    [:TOP :RIGHT :BOTTOM :LEFT
+     :TOP_LEFT :TOP_RIGHT :BOTTOM_RIGHT :BOTTOM_LEFT
+     ] (range))
+  )
+
+
+
 
 (defn setResolutionDesign
   [designWidth designHeight]
@@ -59,15 +64,15 @@
         parentOffset (.getPosition parent)
         x (.-x parentOffset)
         y (.-y parentOffset)
-        nodeOffset (case positionType
+        nodeOffset (condp = positionType
                      (:TOP POSITION)   (cc/p 0 y)
                      (:RIGHT POSITION)  (cc/p x 0)
-                     (:BOTTOM POSITION) (cc/p 0 (- y))
-                     (:LEFT POSITION)  (cc/p (- x) 0)
-                     (:TOP_LEFT POSITION) (cc/p (- x) y)
-                     (:TOP_RIGHT POSITION) (cc/p x y)
-                     (:BOTTOM_RIGHT POSITION) (cc/p x (- y))
-                     (:BOTTOM_LEFT POSITION) (cc/p (- x) (- y)))]
+                     (:BOTTOM POSITION)   (cc/p 0 (- y))
+                     (:LEFTP POSITION)    (cc/p (- x) 0)
+                     (:TOP_LEFT POSITION)  (cc/p (- x) y)
+                     (:TOP_RIGHT  POSITION) (cc/p x y)
+                     (:BOTTOM_RIGHT  POSITION) (cc/p x (- y))
+                     (:BOTTOM_LEFT POSITION)  (cc/p (- x) (- y)))]
     (.setPosition node (cc/pAdd (.getPosition node) nodeOffset))
     )
   )
