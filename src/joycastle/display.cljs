@@ -1,4 +1,6 @@
-(ns joycastle.display)
+(ns joycastle.display
+  (:require [cocos2d.core :as cc]
+            [joycastle.utils :as utils]))
 
 
 (def ^:constant POSITION
@@ -23,72 +25,57 @@
 (def setLandScapeResolutionDesign
   (setResolutionDesign 960 640))
 
-;(defn adjustNodeCenter
-;  ([node]
-;    (let [parent (.getParent node)]
-;      (adjustNodeCenter node parent)))
-;  ([node parent]
-;    (let [parentSize (if (or (nil? parent) (.-width ) (.-winSize js/cc) () ))]))
-;  )
+(defn adjustNodeCenter
+  ([node]
+    (let [parent (.getParent node)]
+      (adjustNodeCenter node parent)))
+  ([node parent]
+    (let [parentSize (if (nil? parent)
+                       cc/winSize
+                       (if (some #(identical? 0 %) '((.-width parent) (.-height) parent))
+                         cc/winSize
+                         (.getContentSize parent)
+                         )
+                       )
+          half #(/ (%1 - %2) 2)
+          offsetPos (cc/p (half (.-width parentSize) (.-width node))
+                          (half (.-height parentSize) (.-height node)))
+          nodeNewPos (cc/pAdd (.getPosition node) offsetPos)
+          ]
+      (.setPosition node nodeNewPos)
+      (if (not (nil? (.-controller node)))
+        (if (utils/isFunction (.-onNodeAdjusted (.-controller node)))
+          (.onNodeAdjusted (.-controller node) node))
+        )
+      )
+    )
+  )
 
 
 
-;    adjustNodeCenter: function(node, parent){
-;        var parentSize;
-;        parent = parent || node.getParent();
-;        if (parent){
-;            parentSize = parent.getContentSize();
-;            if (parentSize.width === 0 || parentSize.height === 0){
-;                parentSize = cc.winSize;
-;            }
-;        } else {
-;            parentSize = cc.winSize;
-;        }
-;        var offsetPos = cc.p((parentSize.width - node.width)/2, (parentSize.height - node.height)/2);
-;        node.setPosition(cc.pAdd(node.getPosition(), offsetPos));
-;        if (node.controller){
-;            var ctl = node.controller;
-;            if (typeof ctl.onNodeAdjusted === "function"){
-;                ctl.onNodeAdjusted(node);
-;            }
-;        }
-;    },
-;;
-;    adjustNodeWithScreenRelativeToParent: function(node, positionType, parent){
-;        parent = parent || node.getParent();
-;        var parentOffset = parent.getPosition();
-;        var nodeOffset;
-;        switch (positionType){
-;            case this.POSITION.TOP:
-;                nodeOffset = cc.p(0, parentOffset.y);
-;                break;
-;            case this.POSITION.RIGHT:
-;                nodeOffset = cc.p(parentOffset.x, 0);
-;                break;
-;            case this.POSITION.BOTTOM:
-;                nodeOffset = cc.p(0, -parentOffset.y);
-;                break;
-;            case this.POSITION.LEFT:
-;                nodeOffset = cc.p(-parentOffset.x, 0);
-;                break;
-;            case this.POSITION.TOP_LEFT:
-;                nodeOffset = cc.p(-parentOffset.x, parentOffset.y);
-;                break;
-;            case this.POSITION.TOP_RIGHT:
-;                nodeOffset = cc.p(parentOffset.x, parentOffset.y);
-;                break;
-;            case this.POSITION.BOTTOM_RIGHT:
-;                nodeOffset = cc.p(parentOffset.x, -parentOffset.y);
-;                break;
-;            case this.POSITION.BOTTOM_LEFT:
-;                nodeOffset = cc.p(-parentOffset.x, -parentOffset.y);
-;                break;
-;        }
-;        node.setPosition(cc.pAdd(node.getPosition(), nodeOffset));
-;    },
-;;
-;    resizeToScreenRelativeToParent: function(node, parent){
-;        parent = parent || node.getParent();
-;        node.setContentSize(cc.winSize);
-;        this.adjustNodeWithScreenRelativeToParent(node, this.POSITION.BOTTOM_LEFT, parent);
-;    }
+(defn adjustNodeWithScreenRelativeToParent
+  [node positionType parent]
+  (let [realParent (if (nil? parent) (.getParent node) parent)
+        parentOffset (.getPosition parent)
+        x (.-x parentOffset)
+        y (.-y parentOffset)
+        nodeOffset (case positionType
+                     (:TOP POSITION)   (cc/p 0 y)
+                     (:RIGHT POSITION)  (cc/p x 0)
+                     (:BOTTOM POSITION) (cc/p 0 (- y))
+                     (:LEFT POSITION)  (cc/p (- x) 0)
+                     (:TOP_LEFT POSITION) (cc/p (- x) y)
+                     (:TOP_RIGHT POSITION) (cc/p x y)
+                     (:BOTTOM_RIGHT POSITION) (cc/p x (- y))
+                     (:BOTTOM_LEFT POSITION) (cc/p (- x) (- y)))]
+    (.setPosition node (cc/pAdd (.getPosition node) nodeOffset))
+    )
+  )
+
+(defn resizeToScreenRelativeToParent
+  [node parent]
+  (let [realParent (if (nil? parent) (.getParent node) parent)]
+    (.setContentSize node (cc/winSize))
+    (adjustNodeWithScreenRelativeToParent node (:BOTTOM_LEFT POSITION) realParent)
+    )
+  )

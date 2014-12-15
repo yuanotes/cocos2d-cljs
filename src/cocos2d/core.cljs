@@ -9,6 +9,10 @@
 
 (def pCross (.-pCross js/cc))
 (def pSub (.-pSub js/cc))
+(def pAdd (.-pAdd js/cc))
+
+(def view (.-view js/cc))
+(def winSize (.-winSize js/cc))
 
 
 (defn ccset
